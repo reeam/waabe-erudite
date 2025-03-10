@@ -1,0 +1,86 @@
+---
+import BlogCard from '@/components/BlogCard.astro'
+import Container from '@/components/Container.astro'
+import Link from '@/components/Link.astro'
+import { buttonVariants } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+// import Sarch from '@/components/ui/Search.astro'
+
+const blog = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE)
+---
+
+<Layout title="Home" description={SITE.DESCRIPTION}>
+  <Container class="flex flex-col gap-y-6">
+    <section>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-3xl">ワーっとなったことを共有するブログ！</CardTitle>
+          <!-- <CardDescription
+            >/$02C8er(y)$0259$02CCd$012Bt/ &bull; <span class="font-semibold">adjective</span
+            ></CardDescription
+          > -->
+        </CardHeader>
+        <CardContent>
+          <p class="mb-2 text-sm text-muted-foreground">
+            日々生活をしていてみんなにも共有したい！と感じたことをこのブログで共有します。
+            <p class="mb-2 text-sm">
+              Notice<br>
+             <Link
+              href="https://astro.build"
+              class="text-foreground"
+              external
+              underline>サイトをリニューアルしました！</Link>
+            </p>
+          </p>
+        </CardContent>
+      </Card>
+    </section>
+    <section class="flex flex-col gap-y-4">
+      <h2 class="text-2xl font-bold">PICKUP</h2>
+      <ul class="not-prose flex flex-col gap-y-4">
+        {
+          blog.map((post) => (
+            <li>
+              <BlogCard entry={post} />
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+    <section class="flex flex-col gap-y-4">
+      <h2 class="text-2xl font-bold">LATEST</h2>
+      <ul class="not-prose flex flex-col gap-y-4">
+        {
+          blog.map((post) => (
+            <li>
+              <BlogCard entry={post} />
+            </li>
+          ))
+        }
+      </ul>
+      <div class="flex justify-center">
+        <Link
+          href="/post"
+          class={buttonVariants({ variant: 'ghost' }) + ' group'}
+        >
+          See all posts <span
+            class="ml-1.5 transition-transform group-hover:translate-x-1"
+            >&rarr;</span
+          >
+        </Link>
+      </div>
+    </section>
+  </Container>
+</Layout>

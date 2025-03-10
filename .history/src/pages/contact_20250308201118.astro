@@ -1,0 +1,39 @@
+---
+import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Container from '@/components/Container.astro'
+import Link from '@/components/Link.astro'
+import ProjectCard from '@/components/ProjectCard.astro'
+import { SITE } from '@/consts'
+import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+
+const projects = await getCollection('projects')
+---
+
+<Layout title="Contact" description={SITE.DESCRIPTION}>
+  <Container class="flex flex-col gap-y-6">
+    <Breadcrumbs items={[{ label: 'Contact', icon: 'lucide:info' }]} />
+
+    <section>
+      <div class="min-w-full">
+        <div class="prose prose-neutral mb-8 dark:prose-invert">
+          <p class="mb-4">
+            お問い合わせはこちらからお願いします。
+          </p>
+		  <p>
+			<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSezIHrLXuK5bUl7Sb3oKks52zpvVmAx7PWii6LGYe9rRhfPbA/viewform?embedded=true" width="640" height="820" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+		  </p>
+          <p>
+            フォームが正しく表示されない場合は、お手数ですが
+            <Link
+            href="https://forms.gle/pty7ZLRjXTgRSJar6"
+            class="text-foreground"
+            external
+            underline>こちらのページ</Link>
+            もしくはページ下部のメールアイコンよりご連絡をお願いします。
+          </p>
+        </div>
+      </div>
+    </section>
+  </Container>
+</Layout>

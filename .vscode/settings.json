@@ -1,0 +1,9 @@
+{
+	"frontMatter.content.pageFolders": [
+		{
+			"path": "[[workspace]]/src/content/blog"
+		}
+	],
+	"frontMatter.git.enabled": true,
+	"frontMatter.content.publicFolder": "public"
+}
