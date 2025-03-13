@@ -35,7 +35,6 @@
           "title": "authors",
           "name": "authors",
           "type": "tags"
-          "default": ["reeam"]
         }
       ]
     }

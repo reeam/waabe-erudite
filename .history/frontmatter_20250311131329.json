@@ -14,7 +14,7 @@
         {
           "title": "description",
           "name": "description",
-          "type": "string"
+          "type": "datetime"
         },
         {
           "title": "date",
@@ -31,17 +31,11 @@
           "name": "image",
           "type": "image"
         }
-        {
-          "title": "authors",
-          "name": "authors",
-          "type": "tags"
-          "default": ["reeam"]
-        }
       ]
     }
   ],
   "frontMatter.framework.id": "astro",
-  "frontMatter.preview.host": "http://localhost:1234",
+  "frontMatter.preview.host": "http://localhost:4321",
   "frontMatter.content.pageFolders": [
     {
       "path": "[[workspace]]/src/content/blog"

@@ -31,12 +31,6 @@
           "name": "image",
           "type": "image"
         }
-        {
-          "title": "authors",
-          "name": "authors",
-          "type": "tags"
-          "default": ["reeam"]
-        }
       ]
     }
   ],
