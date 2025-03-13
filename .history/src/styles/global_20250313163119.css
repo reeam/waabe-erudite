@@ -1,0 +1,414 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'GenjyuuGothic';
+  src: url('/fonts/GenJyuuGothic-Normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GenjyuuGothic';
+  src: url('/fonts/GenJyuuGothic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('/fonts/NotoSansJP-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+ /* カラーコードは「HSL」形式 */
+@layer base {
+  :root {
+    --background: 50 100% 97.5%;
+    --foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 80.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 80.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 80.1%;
+    --accent-foreground: 0 0% 9%;
+    --additive: 112 50% 36%;
+    --additive-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 41deg 86% 83%;
+    --ring: 0 0% 3.9%;
+  }
+  .dark {
+    --background: 50 100% 5%;
+    --foreground: 50 100% 96%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 55 10% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --additive: 112 50% 36%;
+    --additive-foreground: 0 0% 9%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 55 40% 20%;
+    --ring: 0 0% 83.1%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: light;
+    @apply bg-background text-foreground;
+
+    &.dark {
+      color-scheme: dark;
+    }
+
+    ::-webkit-scrollbar-corner {
+      @apply bg-transparent;
+    }
+  }
+
+  .disable-transitions,
+  .disable-transitions * {
+    @apply !transition-none;
+  }
+}
+
+@layer components {
+  article {
+    @apply prose-headings:scroll-mt-20 prose-headings:break-words first:prose-headings:mt-0 prose-p:break-words prose-a:!break-words prose-a:!decoration-muted-foreground prose-a:underline-offset-[3px] prose-a:transition-colors hover:prose-a:!decoration-foreground prose-pre:!px-0 prose-img:mx-auto;
+
+    .katex-display {
+      @apply overflow-x-auto overflow-y-hidden py-4;
+    }
+
+    /* Removes background from <mark> elements */
+    mark {
+      @apply bg-transparent;
+    }
+
+    /* Blanket syntax highlighting */
+    code[data-theme*=' '] {
+      span {
+        color: var(--shiki-light);
+      }
+
+      .dark & span {
+        color: var(--shiki-dark);
+      }
+    }
+
+    /* Inline code */
+    :not(pre) > code {
+      @apply relative rounded bg-muted/50 px-[0.3rem] py-[0.2rem] font-mono text-sm font-medium;
+    }
+
+    /* Code blocks */
+    figure[data-rehype-pretty-code-figure] {
+      @apply relative;
+
+      /* Code block titles */
+      [data-rehype-pretty-code-title] {
+        @apply break-words rounded-t-xl border-x border-t px-4 py-2 text-sm font-medium text-foreground;
+
+        /* Remove top margin from code block if a title is present */
+        & + pre {
+          @apply mt-0 rounded-t-none;
+        }
+      }
+
+      /* Shadcn-like scrollbar */
+      pre::-webkit-scrollbar {
+        @apply h-2.5 w-2.5;
+      }
+
+      pre::-webkit-scrollbar-track {
+        @apply bg-transparent;
+      }
+
+      pre::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-border bg-clip-padding p-px;
+      }
+
+      /* Code block styles */
+      pre {
+        @apply static max-h-[600px] overflow-auto rounded-xl border bg-secondary/20 py-4 text-sm leading-loose;
+
+        /* Code block content */
+        > code {
+          @apply whitespace-pre-wrap;
+          counter-reset: line;
+
+          /* For code blocks with line numbers */
+          &[data-line-numbers] {
+            > [data-line]::before {
+              counter-increment: line;
+              content: counter(line);
+              @apply mr-4 inline-block w-4 text-right text-muted-foreground;
+            }
+          }
+
+          /* For each line in the code block */
+          > [data-line] {
+            @apply px-4;
+          }
+
+          /* Highlighted lines */
+          [data-highlighted-line] {
+            @apply bg-foreground/10;
+          }
+
+          /* Highlighted characters */
+          [data-highlighted-chars] > span {
+            @apply bg-muted-foreground/40 py-[7px];
+          }
+
+          /* Diff lines */
+          .diff {
+            &.add {
+              @apply bg-additive/15;
+            }
+            &.remove {
+              @apply bg-destructive/15;
+            }
+          }
+
+          /* Copy button */
+          > button:has(> span) {
+            @apply right-0.5 top-[3px] m-0 size-8 rounded-md bg-background p-1 backdrop-blur-none transition-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/* アプリーチ */
+.appreach {
+  text-align: center;
+	padding: 18px;
+  border: 1px solid #d7d7d7;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.appreach:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.appreach p {
+  margin: 0;
+}
+.appreach a:after {
+  display: none;
+}
+.appreach__icon {
+  border-radius: 10%;
+  width: 100px;
+  height: auto;
+}
+.appreach__detail {
+  display: block;
+  margin-top: 12px;
+}
+.appreach__name {
+  color: #111;
+  font-weight: bold;
+}
+.appreach__info {
+  font-size: 11px;
+  line-height: 17px;
+  margin-top: 5px !important;
+  color: #999;
+}
+.appreach__developper, .appreach__price {
+  margin-right: 0.5em;
+}
+.appreach__posted a {
+  margin-left: 0.5em;
+  color: #999;/* 本文のリンク色と揃えてもいいかも */
+  text-decoration: none;
+}
+.appreach__links {
+  margin-top: 12px;
+}
+.appreach__links a img {
+    width: 135px;
+    height: 40px;
+}
+.appreach__links a:nth-of-type(2) img {
+    /* ボタンが2つある場合の2つ目のボタンに対してマージンを指定 */
+    margin: 10px 0 0;
+}
+@media screen and (min-width: 360px) {/* 画面幅360px以上のとき */
+.appreach__links a:nth-of-type(2) img {
+    margin: 0 0 0 10px;
+}  
+}
+@media screen and (min-width: 481px) {/* 画面幅481px以上のとき */
+.appreach {
+    text-align: left;
+}
+.appreach__icon {
+    float: left;
+    margin: 0 15px 0 0;
+}
+.appreach__detail {
+    margin-top: 0;
+    margin-left: 115px;
+}
+.appreach__links {
+    margin-left: 115px;
+}
+}
+@media screen and (min-width: 640px) {/* 画面幅640px以上のとき */
+.appreach__icon {
+    margin: 0 20px 0 0;
+    width: 120px;
+}
+.appreach__detail {
+    margin-left: 140px;
+}
+.appreach__info {
+    margin-top: 6px !important;
+}
+.appreach__links {
+    margin-top: 15px;
+    margin-left: 140px;
+}
+}
+
+/* renmark-link-card */
+.rlc-container {
+  --padding-x: 1rem;
+  --padding-y: 0.7rem;
+  --border-radius: calc(0.5rem - 1px);
+  border: 1px solid var(--tw-prose-hr);
+  border-radius: calc(var(--border-radius) + 1px);
+  text-decoration: none;
+
+  transition: background-color 150ms;
+
+  &:hover {
+    background-color: #f5f5f5;
+    @media (prefers-color-scheme: dark) {
+      background-color: #262626;
+    }
+  }
+
+  width: 100%;
+  margin-bottom: 1.25em;
+
+  display: grid;
+  grid-template-columns: 1fr 116px;
+  gap: 1rem;
+  @media (min-width: 60ch) {
+    grid-template-columns: 1fr 220px;
+  }
+  .rlc-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: normal;
+
+    grid-column: 1;
+    padding: var(--padding-y) 0 var(--padding-y) var(--padding-x);
+    max-width: 100%;
+    min-width: 100%;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    .rlc-title {
+      font-size: 1rem;
+      font-weight: bold;
+      line-height: 1.3;
+      color: var(--tw-prose-headings);
+
+      overflow: hidden;
+      display: -webkit-box;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+    .rlc-description {
+      font-size: 0.8rem;
+      color: #737373;
+      @media (prefers-color-scheme: dark) {
+        color: #a3a3a3;
+      }
+
+      margin-bottom: 0.5em;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      -webkit-line-clamp: 1;
+    }
+    .rlc-url-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      .rlc-favicon {
+        margin-top: 0.15rem;
+        margin-bottom: 0;
+      }
+      .rlc-url {
+        font-size: 0.8rem;
+        color: #525252;
+        @media (prefers-color-scheme: dark) {
+          color: #d4d4d4;
+        }
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        -webkit-line-clamp: 1;
+      }
+    }
+  }
+  .rlc-image-container {
+    grid-column: 2;
+    aspect-ratio: 1 / 1;
+    @media (min-width: 60ch) {
+      aspect-ratio: 1.91 / 1;
+    }
+    .rlc-image {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
+  }
+}
